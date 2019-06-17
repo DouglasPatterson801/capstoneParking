@@ -124,13 +124,16 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideKeyboardWhenTappedAround()
         passwordTextField.isSecureTextEntry = true
         
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
-        emailTextField.text = "test@gmail.com"
-        passwordTextField.text = "test"
+        #if DEBUG
+        emailTextField.text = "d@d.com"
+        passwordTextField.text = "d"
+        #endif
     }
     
     override func viewDidLayoutSubviews() {

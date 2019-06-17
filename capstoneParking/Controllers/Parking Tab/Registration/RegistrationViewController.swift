@@ -12,7 +12,8 @@ protocol NavigationButtonDelegate {
     func cancelButtonTapped(sender: UIBarButtonItem)
 }
 
-class RegistrationViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NavigationButtonDelegate {
+class RegistrationViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NavigationButtonDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+    
     
     //========================================
     //MARK: - Properties
@@ -20,6 +21,26 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
     
     var currentTimeButton: UIButton?
     private var availableHours: [String : [String]] = [:]
+    
+    //State Picker Properties
+    let statePickerData: [String] = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "Washington D.C.", "West Virginia", "Wisconsin", "Wyoming"]
+    
+
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return statePickerData.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return statePickerData[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        stateTextField.text = statePickerData[row]
+    }
     
     //========================================
     //MARK: - IBOutlets
@@ -216,6 +237,11 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideKeyboardWhenTappedAround()
+        let pickerView = UIPickerView()
+        pickerView.delegate = self
+        stateTextField.inputView = pickerView
+        
         timePickerViewHeightConstraint.constant = 0
         
         timePickerView.clipsToBounds = true
